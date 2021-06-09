@@ -9,6 +9,9 @@ import {
   AUTHENTICATION,
   LOGOUT,
   CHANGE_THEME,
+  CREATE_GROUP,
+  FETCH_GROUPS,
+  UPLOAD_ATTACHMENTS,
 } from './types'
 import { LOCAL_STORAGE } from './variables'
 import { request } from './components/request'
@@ -59,12 +62,46 @@ export function changeTheme(newTheme) {
   }
 }
 
-export function register(data) {
+export function register(data, headers) {
   return async (dispatch) => {
     try {
       dispatch(showLoader())
-      await request('/api/auth/register', 'POST', { ...data })
+      await request('/api/auth/register', 'POST', headers, { ...data })
       dispatch({ type: REGISTATION })
+      dispatch(hideLoader())
+    } catch (e) {
+      dispatch(showAlert('Что-то пошло не так'))
+      dispatch(hideLoader())
+    }
+  }
+}
+
+export function uploadGroup(formData, headers) {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoader())
+      await request('/api/upload/group', 'POST', formData, headers, true)
+      dispatch({ type: CREATE_GROUP })
+      dispatch(hideLoader())
+    } catch (e) {
+      dispatch(showAlert('Что-то пошло не так'))
+      dispatch(hideLoader())
+    }
+  }
+}
+
+export function uploadAttachments(formData, headers) {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoader())
+      const response = await request(
+        '/api/upload/attachments',
+        'POST',
+        formData,
+        headers,
+        true
+      )
+      dispatch({ type: UPLOAD_ATTACHMENTS, payload: response.files })
       dispatch(hideLoader())
     } catch (e) {
       dispatch(showAlert('Что-то пошло не так'))
@@ -101,6 +138,20 @@ export function logout() {
     dispatch({
       type: LOGOUT,
     })
+  }
+}
+
+export function fetchGroups(headers) {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoader())
+      const response = await request('/api/group', 'GET', null, headers)
+      dispatch({ type: FETCH_GROUPS, payload: [...response] })
+      dispatch(hideLoader())
+    } catch (e) {
+      dispatch(showAlert('Что-то пошло не так'))
+      dispatch(hideLoader())
+    }
   }
 }
 
