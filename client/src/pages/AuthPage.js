@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { authentication, register } from '../redux/actions'
 import SubmitButton from '../components/SubmitButton'
+import InputFloating from '../components/InputFloating'
 
 const AuthPage = () => {
   const dispatch = useDispatch()
@@ -22,32 +23,21 @@ const AuthPage = () => {
       <form>
         <img className="mb-4" alt="" />
         <h1 className="h3 mb-3 fw-normal">Авторизация</h1>
-        <div className="form-floating">
-          <input
-            className="form-control"
-            placeholder="Логин"
-            type="text"
-            name="login"
-            value={data.login}
-            onChange={changeInputHandler}
-          />
-          <label className="text-dark" htmlFor="login">
-            Логин
-          </label>
-        </div>
-        <div className="form-floating">
-          <input
-            className="form-control"
-            placeholder="Пароль"
-            type="password"
-            name="password"
-            value={data.password}
-            onChange={changeInputHandler}
-          />
-          <label className="text-dark" htmlFor="password">
-            Пароль
-          </label>
-        </div>
+        <InputFloating
+          name="login"
+          placeholder="Логин"
+          value={data.login}
+          onChange={changeInputHandler}
+          required={true}
+        />
+        <InputFloating
+          name="password"
+          type="password"
+          placeholder="Пароль"
+          value={data.password}
+          onChange={changeInputHandler}
+          required={true}
+        />
         <SubmitButton onClick={onClickHandler} width={'w-100'} text="Войти" />
         <SubmitButton
           onClick={onClickHandler}

@@ -1,8 +1,9 @@
 const { Schema, model, Types } = require('mongoose')
 
 const schema = new Schema({
-  login: { type: String, required: true, unique: true },
-  password: { type: String, require: true },
+  name: { type: String, required: true, unique: true },
+  addresses: [{ type: String, require: true }],
+  file: { type: Object },
 })
 
-module.exports = model('User', schema)
+module.exports = model('Group', schema)

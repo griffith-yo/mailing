@@ -33,6 +33,9 @@ const Navbar = () => {
             <Link className="nav-link border-0 outline-none" to="/groups">
               Группы рассылки
             </Link>
+            <Link className="nav-link border-0 outline-none" to="/senders">
+              Отправители
+            </Link>
             <Link className="nav-link border-0 outline-none" to="/reports">
               Отчеты
             </Link>

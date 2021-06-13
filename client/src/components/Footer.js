@@ -37,7 +37,7 @@ const Footer = () => {
       </p>
       <div className="form-check form-switch d-flex justify-content-center">
         <input
-          className="form-check-input me-3 w-7"
+          className="form-check-input me-3 w-4"
           type="checkbox"
           id="changeTheme"
           onClick={changeThemeHandler}

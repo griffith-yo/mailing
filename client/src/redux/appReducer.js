@@ -5,11 +5,12 @@ import {
   HIDE_ALERT,
   CHANGE_THEME,
 } from './types'
+import { LOCAL_STORAGE_APP } from './components/localStorage'
 
 const initialState = {
   loading: false,
   alert: null,
-  theme: 'light',
+  theme: LOCAL_STORAGE_APP ? LOCAL_STORAGE_APP.theme : 'light',
 }
 
 export const appReducer = (state = initialState, action) => {

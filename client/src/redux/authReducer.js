@@ -1,9 +1,7 @@
 import { AUTHENTICATION, REGISTATION, LOGOUT } from './types'
-import { LOCAL_STORAGE } from './variables'
+import { LOCAL_STORAGE_AUTH } from './components/localStorage'
 
-const storage = JSON.parse(localStorage.getItem(LOCAL_STORAGE))
-
-const initialState = { ...storage } || {
+const initialState = { ...LOCAL_STORAGE_AUTH } || {
   isAuthenticated: false,
   id: '',
   token: '',

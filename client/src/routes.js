@@ -5,6 +5,7 @@ import SendPage from './pages/SendPage'
 import GroupsPage from './pages/GroupsPage'
 import ReportsPage from './pages/ReportsPage'
 import HistoryPage from './pages/HistoryPage'
+import SendersPage from './pages/SendersPage'
 
 export const useRoutes = (isAuthenticated) => {
   if (isAuthenticated) {
@@ -21,6 +22,9 @@ export const useRoutes = (isAuthenticated) => {
         </Route>
         <Route path="/history" exact>
           <HistoryPage />
+        </Route>
+        <Route path="/senders" exact>
+          <SendersPage />
         </Route>
         <Redirect to="/send" />
       </Switch>

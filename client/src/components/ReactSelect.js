@@ -34,6 +34,7 @@ const ReactSelect = ({
     />
     <label
       htmlFor={id}
+      className="text-dark"
       style={{
         opacity: '0.65',
         transform: 'scale(0.85) translateY(-0.5rem) translateX(0.15rem)',

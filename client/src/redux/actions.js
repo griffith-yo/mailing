@@ -12,9 +12,12 @@ import {
   CREATE_GROUP,
   FETCH_GROUPS,
   UPLOAD_ATTACHMENTS,
+  CREATE_SENDER,
+  SEND_MAIL,
+  FETCH_SENDERS,
 } from './types'
-import { LOCAL_STORAGE } from './variables'
 import { request } from './components/request'
+import { setAuth, setApp, clearAuth } from './components/localStorage'
 
 export function createPost(post) {
   return {
@@ -55,6 +58,9 @@ export function hideAlert() {
 
 export function changeTheme(newTheme) {
   return (dispatch) => {
+    setApp({
+      theme: newTheme,
+    })
     return dispatch({
       type: CHANGE_THEME,
       payload: newTheme,
@@ -68,6 +74,34 @@ export function register(data, headers) {
       dispatch(showLoader())
       await request('/api/auth/register', 'POST', headers, { ...data })
       dispatch({ type: REGISTATION })
+      dispatch(hideLoader())
+    } catch (e) {
+      dispatch(showAlert('Что-то пошло не так'))
+      dispatch(hideLoader())
+    }
+  }
+}
+
+export function createSender(data, headers) {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoader())
+      await request('/api/create/sender', 'POST', { ...data }, headers)
+      dispatch({ type: CREATE_SENDER })
+      dispatch(hideLoader())
+    } catch (e) {
+      dispatch(showAlert('Что-то пошло не так'))
+      dispatch(hideLoader())
+    }
+  }
+}
+
+export function sendMail(data, headers) {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoader())
+      await request('/api/send/', 'POST', { ...data }, headers)
+      dispatch({ type: SEND_MAIL })
       dispatch(hideLoader())
     } catch (e) {
       dispatch(showAlert('Что-то пошло не так'))
@@ -116,14 +150,11 @@ export function authentication(data) {
       dispatch(showLoader())
       const response = await request('/api/auth/login', 'POST', { ...data })
       dispatch({ type: AUTHENTICATION, payload: { ...response } })
-      localStorage.setItem(
-        LOCAL_STORAGE,
-        JSON.stringify({
-          id: response.userId,
-          token: response.token,
-          isAuthenticated: true,
-        })
-      )
+      setAuth({
+        id: response.userId,
+        token: response.token,
+        isAuthenticated: true,
+      })
       dispatch(hideLoader())
     } catch (e) {
       dispatch(showAlert('Что-то пошло не так'))
@@ -134,7 +165,7 @@ export function authentication(data) {
 
 export function logout() {
   return (dispatch) => {
-    localStorage.removeItem(LOCAL_STORAGE)
+    clearAuth()
     dispatch({
       type: LOGOUT,
     })
@@ -155,15 +186,12 @@ export function fetchGroups(headers) {
   }
 }
 
-export function fetchPosts() {
+export function fetchSenders(headers) {
   return async (dispatch) => {
     try {
       dispatch(showLoader())
-      const response = await fetch(
-        'https://jsonplaceholder.typicode.com/posts?_limit=5'
-      )
-      const json = await response.json()
-      dispatch({ type: FETCH_POSTS, payload: json })
+      const response = await request('/api/sender', 'GET', null, headers)
+      dispatch({ type: FETCH_SENDERS, payload: [...response] })
       dispatch(hideLoader())
     } catch (e) {
       dispatch(showAlert('Что-то пошло не так'))
