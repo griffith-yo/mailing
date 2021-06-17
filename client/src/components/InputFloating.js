@@ -17,15 +17,12 @@ const InputFloating = ({
         type={type}
         className="form-control"
         name={name}
-        id={id}
         placeholder={placeholder}
         onChange={onChange}
         value={value}
         required={required}
       />
-      <label className="text-dark" htmlFor={id}>
-        {placeholder}
-      </label>
+      <label className="text-dark">{placeholder}</label>
     </div>
   )
 }
@@ -34,7 +31,6 @@ InputFloating.defaultProps = {
   spacing: '',
   type: 'text',
   name: 'name',
-  id: 'id',
   placeholder: 'placeholder',
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
@@ -49,7 +45,7 @@ InputFloating.propTypes = {
   placeholder: PropTypes.string.isRequired,
   onChange: PropTypes.func,
   value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-  required: PropTypes.string,
+  required: PropTypes.bool.isRequired,
 }
 
 export default InputFloating

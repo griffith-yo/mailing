@@ -38,12 +38,21 @@ const AuthPage = () => {
           onChange={changeInputHandler}
           required={true}
         />
-        <SubmitButton onClick={onClickHandler} width={'w-100'} text="Войти" />
-        <SubmitButton
-          onClick={onClickHandler}
-          width={'w-100 text-white'}
-          text="Регистрация"
-        />
+        <div className="btn-group-vertical d-block">
+          {' '}
+          <SubmitButton
+            onClick={onClickHandler}
+            size={'btn-lg'}
+            width={'d-block'}
+            text="Войти"
+          />
+          <SubmitButton
+            onClick={onClickHandler}
+            size={'btn-lg'}
+            width={'d-block'}
+            text="Регистрация"
+          />
+        </div>
       </form>
     </main>
   )

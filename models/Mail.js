@@ -5,6 +5,7 @@ const schema = new Schema({
   sender: { type: Types.ObjectId, require: true },
   theme: { type: String, require: true },
   body: { type: String, require: true },
+  results: [{ type: Object, require: true }],
   attachments: { type: Array },
 })
 

@@ -4,12 +4,15 @@ import {
   SHOW_ALERT,
   HIDE_ALERT,
   CHANGE_THEME,
+  SHOW_INFO,
+  HIDE_INFO,
 } from './types'
 import { LOCAL_STORAGE_APP } from './components/localStorage'
 
 const initialState = {
   loading: false,
   alert: null,
+  info: null,
   theme: LOCAL_STORAGE_APP ? LOCAL_STORAGE_APP.theme : 'light',
 }
 
@@ -23,6 +26,10 @@ export const appReducer = (state = initialState, action) => {
       return { ...state, alert: action.payload }
     case HIDE_ALERT:
       return { ...state, alert: null }
+    case SHOW_INFO:
+      return { ...state, info: action.payload }
+    case HIDE_INFO:
+      return { ...state, info: null }
     case CHANGE_THEME:
       return { ...state, theme: action.payload }
     default:

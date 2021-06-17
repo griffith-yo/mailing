@@ -21,6 +21,10 @@ const ReactSelect = ({
           paddingLeft: '0.1rem',
           paddingTop: '1.5rem',
         }),
+        menu: (provided, state) => ({
+          ...provided,
+          zIndex: 10,
+        }),
       }}
       placeholder="Выбрать..."
       onChange={onChange}

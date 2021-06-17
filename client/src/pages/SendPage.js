@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import SunEditor from 'suneditor-react'
 import 'suneditor/dist/css/suneditor.min.css'
@@ -8,63 +8,42 @@ import SubmitButton from '../components/SubmitButton'
 import InputFloating from '../components/InputFloating'
 import {
   uploadAttachments,
-  fetchGroups,
-  fetchSenders,
+  fetchGroupsSelect,
+  fetchSendersSelect,
   sendMail,
 } from '../redux/actions'
 
 const SendPage = () => {
   const dispatch = useDispatch()
-  const token = useSelector((state) => state.auth.token)
-  const fetchedGroups = useSelector((state) => state.mailing.fetchedGroups)
-  const fetchedSenders = useSelector((state) => state.mailing.fetchedSenders)
+  const groups = useSelector((state) => state.mailing.fetchedGroupsSelect)
+  const senders = useSelector((state) => state.mailing.fetchedSendersSelect)
   const attachments = useSelector((state) => state.mailing.attachments)
-
   const [form, setForm] = useState({
     group: '',
     sender: '',
     theme: '',
     body: '',
   })
-  const fileData = new FormData()
+  const fileData = useMemo(() => new FormData(), [])
 
   const fetch = useCallback(() => {
-    dispatch(
-      fetchGroups({
-        Authorization: `Bearer ${token}`,
-      })
-    )
-    dispatch(
-      fetchSenders({
-        Authorization: `Bearer ${token}`,
-      })
-    )
-  }, [token])
+    dispatch(fetchGroupsSelect())
+    dispatch(fetchSendersSelect())
+  }, [dispatch])
 
   useEffect(() => {
     fetch()
   }, [fetch])
 
-  const onClickHandler = () => {
-    dispatch(
-      sendMail(
-        { ...form, attachments: [...attachments] },
-        {
-          Authorization: `Bearer ${token}`,
-        }
-      )
-    )
-  }
+  const onClickHandler = useCallback(() => {
+    dispatch(uploadAttachments(fileData))
+    dispatch(sendMail({ ...form, attachments: [...attachments] }))
+  }, [dispatch, attachments, fileData, form])
 
   const fileHandler = (event) => {
     for (let i = 0; i < event.target.files.length; i++) {
       fileData.append([event.target.name], event.target.files[i])
     }
-    dispatch(
-      uploadAttachments(fileData, {
-        Authorization: `Bearer ${token}`,
-      })
-    )
   }
   return (
     <main className="px-3 mt-5 mb-5 text-start">
@@ -73,7 +52,7 @@ const SendPage = () => {
           onChange={(item) =>
             setForm((prev) => ({ ...prev, group: item.value }))
           }
-          options={fetchedGroups}
+          options={groups}
           name="selectedGroup"
           id="selectedGroup"
           // value={form.selected}
@@ -84,7 +63,7 @@ const SendPage = () => {
           onChange={(item) =>
             setForm((prev) => ({ ...prev, sender: item.value }))
           }
-          options={fetchedSenders}
+          options={senders}
           name="selectedSender"
           id="selectedSender"
           // value={form.selected}
@@ -94,6 +73,7 @@ const SendPage = () => {
         <InputFloating
           name="theme"
           placeholder="Введите тему"
+          spacing="mb-3"
           onChange={(event) =>
             setForm((prev) => ({
               ...prev,
@@ -167,12 +147,22 @@ const SendPage = () => {
             ],
           }}
         />
-        <InputFile name="attachments" onChange={fileHandler} multiple={true} />
-        <SubmitButton
-          onClick={onClickHandler}
-          width={'w-20'}
-          text="Отправить"
+        <InputFile
+          label="Прикрепить документы"
+          name="attachments"
+          spacing="mt-3"
+          onChange={fileHandler}
+          multiple={true}
         />
+        <div className="row">
+          <SubmitButton
+            onClick={onClickHandler}
+            size="btn-lg"
+            width="w-20"
+            spacing={'mx-auto'}
+            text="Отправить"
+          />
+        </div>
       </form>
     </main>
   )

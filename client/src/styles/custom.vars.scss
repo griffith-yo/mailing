@@ -22,10 +22,10 @@ $form-check-input-focus-border: $white;
   color: $red-400;
 }
 
-// $custom-colors: (
-//   'indigo': $indigo,
-// );
-// $theme-colors: map-merge($theme-colors, $custom-colors);
+$custom-colors: (
+  'gray-300': $gray-300,
+);
+$theme-colors: map-merge($theme-colors, $custom-colors);
 
 $utilities: (
   'width': (

@@ -62,13 +62,12 @@ router.post('/', auth, (req, res) => {
       console.log(err)
       res.status(400).json({ message: err })
     }
-    console.log('Файлы загружены')
     return res.status(200).json({
       files: req.files.map((file) => ({
         filename: file.originalname,
         path: file.destination + file.filename,
       })),
-      message: 'Галерея пополнена',
+      message: 'Файлы прикреплены',
     })
   })
 })

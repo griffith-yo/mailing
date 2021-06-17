@@ -8,6 +8,7 @@ const schema = new Schema({
   port: { type: String },
   secure: { type: String },
   service: { type: String, require: true },
+  date: { type: Date, default: Date.now() },
 })
 
 module.exports = model('Sender', schema)

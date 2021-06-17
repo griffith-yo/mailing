@@ -1,16 +1,16 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { useSelector } from 'react-redux'
 
-const SubmitButton = ({ onClick, width, text }) => {
+const SubmitButton = ({ onClick, width, text, size, spacing, color }) => {
   const loading = useSelector((state) => state.app.loading)
   const theme = useSelector((state) => state.app.theme)
-  let color = ''
 
-  if (theme === 'light') {
-    color = 'btn-outline-dark'
-  } else {
-    color = 'btn-outline-light'
-  }
+  const currentColor = color
+    ? color
+    : theme === 'light'
+    ? 'btn-outline-dark'
+    : 'btn-outline-light'
 
   let buttonContent = text
 
@@ -29,19 +29,31 @@ const SubmitButton = ({ onClick, width, text }) => {
   }
 
   return (
-    <div className="row mb-1">
-      <div className={`${width ? width : 'col-sm-2'} mx-auto`}>
-        <button
-          className={`btn ${color} btn-lg w-100`}
-          type="button"
-          onClick={onClick}
-          disabled={loading}
-        >
-          {buttonContent}
-        </button>
-      </div>
-    </div>
+    <button
+      className={`btn ${currentColor} ${size} ${width} ${spacing}`}
+      type="button"
+      onClick={onClick}
+      data-bs-dismiss="modal"
+      disabled={loading}
+    >
+      {buttonContent}
+    </button>
   )
+}
+
+SubmitButton.defaultProps = {
+  width: 'w-10',
+  text: 'Применить',
+  spacing: '',
+  color: '',
+}
+
+SubmitButton.propTypes = {
+  onClick: PropTypes.func,
+  width: PropTypes.string,
+  color: PropTypes.string,
+  spacing: PropTypes.string,
+  text: PropTypes.string.isRequired,
 }
 
 export default SubmitButton

@@ -59,6 +59,9 @@ router.post('/', auth, async (req, res) => {
           console.log('Файл не выбран')
           res.status(400).json({ message: 'Файл не выбран' })
         } else {
+          const tag = JSON.stringify(req.body.tag)
+          const tags = tag.replace(/"/g, '').split(', ')
+
           // Читаем данные из файла
           const fileContent = fs.readFileSync(
             req.file.destination + req.file.filename,
@@ -70,16 +73,26 @@ router.post('/', auth, async (req, res) => {
             .map((line) => (line ? line.trim() : undefined))
             .filter(Boolean)
 
+          const candidate = await Group.findOne({
+            name: req.file.originalname.split('.')[0],
+          })
+
+          if (candidate)
+            return res
+              .status(400)
+              .json({ message: 'Группа с таким названием уже существует' })
+
           const group = new Group({
             name: req.file.originalname.split('.')[0],
-            addresses: fileLines,
+            emails: [...new Set(fileLines)],
+            tags,
             file: req.file,
           })
 
           await group.save()
 
           res.status(200).json({
-            message: 'Файл загружен',
+            message: 'Группа рассылки создана',
             file: req.file,
           })
         }

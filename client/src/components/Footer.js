@@ -1,6 +1,5 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Link } from 'react-router-dom'
 import { changeTheme } from '../redux/actions'
 
 const Footer = () => {
@@ -22,7 +21,12 @@ const Footer = () => {
     <footer className="mt-auto">
       <p className="mb-2">
         Разработано&nbsp;
-        <a className="text-decoration-none" href="#">
+        <a
+          className="text-decoration-none"
+          href="https://t.me/griffith_yo"
+          target="_blank"
+          rel="noreferrer"
+        >
           Griffith_yo
         </a>
         , шаблон темы&nbsp;
@@ -30,6 +34,7 @@ const Footer = () => {
           className="text-decoration-none"
           href="https://getbootstrap.com/"
           target="_blank"
+          rel="noreferrer"
         >
           Bootstrap
         </a>

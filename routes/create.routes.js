@@ -1,5 +1,4 @@
 const { Router } = require('express')
-const bcrypt = require('bcryptjs')
 const auth = require('../middleware/auth.middleware')
 const { check, validationResult } = require('express-validator')
 const config = require('config')
@@ -24,13 +23,10 @@ router.post(
         })
       }
 
-      // То, что приходит в фронтенд (Получаем из body эти значения)
-      const { name, email, password, smtp, port, type, service } = req.body
+      const { name, email, password, smtp, port, service } = req.body
 
-      // Поиск человека по login
       const candidate = await Sender.findOne({ name })
 
-      // Если такой пользователь есть, то прекращаем выполнение скрипта RETURN и выводим сообщение
       if (candidate) {
         return res
           .status(400)
@@ -46,7 +42,7 @@ router.post(
         secure: port === '465' ? true : false,
         service,
       })
-      // Сохраняем в БД
+
       await sender.save()
       res.status(201).json({ message: 'Отправитель создан' })
     } catch (e) {

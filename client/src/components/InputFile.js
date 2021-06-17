@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types'
 
 const InputFile = ({ name, label, id, onChange, multiple, accept }) => (
-  <div className="mb-3">
+  <div className="my-3">
     {label ? (
       <label htmlFor={id} className="form-label">
         {label}

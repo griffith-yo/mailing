@@ -21,12 +21,12 @@ const BootstrapSelect = ({
         id={id}
         placeholder={placeholder}
         onChange={onChange}
-        value={value}
+        value={value ? value : options[0]}
         required={required}
         multiple={multiple}
       >
         {options.map((option, index) => (
-          <option value={option} selected={index ? '' : 'selected'}>
+          <option key={option} value={option}>
             {option}
           </option>
         ))}
