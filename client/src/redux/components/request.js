@@ -8,7 +8,9 @@ export const request = async (
   file = false
 ) => {
   try {
-    const auth = { Authorization: `Bearer ${LOCAL_STORAGE_AUTH.token}` }
+    const auth = LOCAL_STORAGE_AUTH
+      ? { Authorization: `Bearer ${LOCAL_STORAGE_AUTH.token}` }
+      : {}
 
     // Если передаем body (POST) и работаем не с файлом, то переводим JSON в строковый формат и добавляем Content-Type
     if (body && !file) {
