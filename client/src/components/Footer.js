@@ -1,6 +1,7 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { changeTheme } from '../redux/actions'
+import Toast from './Toast'
 
 const Footer = () => {
   const dispatch = useDispatch()
@@ -18,8 +19,11 @@ const Footer = () => {
   }
 
   return (
-    <footer className="mt-auto">
-      <p className="mb-2">
+    <footer className="d-flex flex-row justify-content-between align-items-end w-100">
+      <div className="w-30">
+        <Toast />
+      </div>
+      <p className="mb-2 align-bottom w-30">
         Разработано&nbsp;
         <a
           className="text-decoration-none"
@@ -40,9 +44,9 @@ const Footer = () => {
         </a>
         .
       </p>
-      <div className="form-check form-switch d-flex justify-content-center">
+      <div className="form-check form-switch d-flex justify-content-center text-end w-30">
         <input
-          className="form-check-input me-3 w-4"
+          className="form-check-input me-3"
           type="checkbox"
           id="changeTheme"
           onClick={changeThemeHandler}

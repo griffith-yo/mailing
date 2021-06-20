@@ -40,7 +40,7 @@ const SendersPage = () => {
   }, [fetch])
 
   return (
-    <main className="px-3 mt-5 mb-5" style={{ height: '80vh' }}>
+    <main className="text-center">
       <h3 className="h3 text-start">
         АДРЕС ОТПРАВИТЕЛЯ{' '}
         <button
@@ -52,58 +52,59 @@ const SendersPage = () => {
         </button>
       </h3>
       <hr />
-      <div className="row mb-3">
-        <div className="col-sm-4 text-start ps-5">
-          <ins>E-MAIL АДРЕС</ins>
-        </div>
-        <div className="col-sm-4 text-center">
-          <ins>ИМЯ ОТПРАВИТЕЛЯ</ins>
-        </div>
-        <div className="col-sm-4 text-end pe-5">
-          <ins>ДЕЙСТВИЯ</ins>
-        </div>
-      </div>
-      {loading ? <Loader /> : <SendersList data={senders} />}
-      <Modal
-        title="Добавление отправителя"
-        id="senderForm"
-        onClick={onClickHandler}
-      >
-        <div className="row g-2 mb-3">
-          <div className="col-md">
-            {' '}
-            <InputFloating
-              name="name"
-              placeholder="Название"
-              onChange={formHandler}
-              value={form.name}
-              required={true}
-            />
+      <div className="scroll">
+        <div className="row mb-3">
+          <div className="col-sm-4 text-start ps-5">
+            <ins>E-MAIL АДРЕС</ins>
           </div>
-          <div className="col-md">
-            {' '}
-            <InputFloating
-              name="email"
-              placeholder="E-mail"
-              onChange={formHandler}
-              value={form.email}
-              required={true}
-            />
+          <div className="col-sm-4 text-center">
+            <ins>ИМЯ ОТПРАВИТЕЛЯ</ins>
           </div>
-          <div className="col-md">
-            {' '}
-            <InputFloating
-              type="password"
-              name="password"
-              placeholder="Пароль"
-              onChange={formHandler}
-              value={form.password}
-              required={true}
-            />
+          <div className="col-sm-4 text-end pe-5">
+            <ins>ДЕЙСТВИЯ</ins>
           </div>
         </div>
-        <div className="row g-2">
-          {/* <div className="col-md">
+        {loading ? <Loader /> : <SendersList data={senders} />}
+        <Modal
+          title="Добавление отправителя"
+          id="senderForm"
+          onClick={onClickHandler}
+        >
+          <div className="row g-2 mb-3">
+            <div className="col-md">
+              {' '}
+              <InputFloating
+                name="name"
+                placeholder="Название"
+                onChange={formHandler}
+                value={form.name}
+                required={true}
+              />
+            </div>
+            <div className="col-md">
+              {' '}
+              <InputFloating
+                name="email"
+                placeholder="E-mail"
+                onChange={formHandler}
+                value={form.email}
+                required={true}
+              />
+            </div>
+            <div className="col-md">
+              {' '}
+              <InputFloating
+                type="password"
+                name="password"
+                placeholder="Пароль"
+                onChange={formHandler}
+                value={form.password}
+                required={true}
+              />
+            </div>
+          </div>
+          <div className="row g-2">
+            {/* <div className="col-md">
             {' '}
             <InputFloating
               name="smtp"
@@ -133,59 +134,60 @@ const SendersPage = () => {
                     options={['STARTTLS', 'SSL/TLS']}
                   />
                 </div> */}
-          <div className="col-md">
-            <BootstrapSelect
-              name="service"
-              placeholder="Почтовый сервис"
-              onChange={formHandler}
-              value={form.service}
-              options={[
-                '126',
-                '163',
-                '1und1',
-                'AOL',
-                'DebugMail',
-                'DynectEmail',
-                'FastMail',
-                'GandiMail',
-                'Gmail',
-                'Godaddy',
-                'GodaddyAsia',
-                'GodaddyEurope',
-                'hot.ee',
-                'Hotmail',
-                'iCloud',
-                'mail.ee',
-                'Mail.ru',
-                'Maildev',
-                'Mailgun',
-                'Mailjet',
-                'Mailosaur',
-                'Mandrill',
-                'Naver',
-                'OpenMailBox',
-                'Outlook365',
-                'Postmark',
-                'QQ',
-                'QQex',
-                'SendCloud',
-                'SendGrid',
-                'SendinBlue',
-                'SendPulse',
-                'SES',
-                'SES-US-EAST-1',
-                'SES-US-WEST-2',
-                'SES-EU-WEST-1',
-                'Sparkpost',
-                'Yahoo',
-                'Yandex',
-                'Zoho',
-                'qiye.aliyun',
-              ]}
-            />
+            <div className="col-md">
+              <BootstrapSelect
+                name="service"
+                placeholder="Почтовый сервис"
+                onChange={formHandler}
+                value={form.service}
+                options={[
+                  '126',
+                  '163',
+                  '1und1',
+                  'AOL',
+                  'DebugMail',
+                  'DynectEmail',
+                  'FastMail',
+                  'GandiMail',
+                  'Gmail',
+                  'Godaddy',
+                  'GodaddyAsia',
+                  'GodaddyEurope',
+                  'hot.ee',
+                  'Hotmail',
+                  'iCloud',
+                  'mail.ee',
+                  'Mail.ru',
+                  'Maildev',
+                  'Mailgun',
+                  'Mailjet',
+                  'Mailosaur',
+                  'Mandrill',
+                  'Naver',
+                  'OpenMailBox',
+                  'Outlook365',
+                  'Postmark',
+                  'QQ',
+                  'QQex',
+                  'SendCloud',
+                  'SendGrid',
+                  'SendinBlue',
+                  'SendPulse',
+                  'SES',
+                  'SES-US-EAST-1',
+                  'SES-US-WEST-2',
+                  'SES-EU-WEST-1',
+                  'Sparkpost',
+                  'Yahoo',
+                  'Yandex',
+                  'Zoho',
+                  'qiye.aliyun',
+                ]}
+              />
+            </div>
           </div>
-        </div>
-      </Modal>
+        </Modal>
+      </div>
     </main>
   )
 }

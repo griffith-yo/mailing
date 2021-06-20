@@ -11,12 +11,10 @@ const Toast = () => {
   const toast = new ToastBootstrap(toastRef.current)
 
   let color = ''
-  let header = 'Заголовок'
   let body = 'Текст всплывающего уведомления'
 
   if (alert) {
     color = 'bg-danger'
-    header = 'Ошибка'
     body = alert
     toast.show()
     toastRef.current.addEventListener('hidden.bs.toast', () =>
@@ -26,7 +24,6 @@ const Toast = () => {
 
   if (info) {
     color = 'bg-success'
-    header = 'Успешно'
     body = info
     toast.show()
     toastRef.current.addEventListener('hidden.bs.toast', () =>
@@ -36,25 +33,23 @@ const Toast = () => {
 
   return (
     <div
-      className="toast align-items-center"
+      className={`toast align-items-center text-white ${color} border-0`}
       role="alert"
       aria-live="assertive"
       aria-atomic="true"
       ref={toastRef}
       data-bs-delay="5000"
     >
-      <div className="toast-header">
-        <div className={`d-flex ${color} rounded me-2 p-2`} />
-        <strong className="me-auto">{header}</strong>
-        {/* <small className="text-muted">прямо сейчас</small> */}
+      <div className="d-flex">
+        {' '}
+        <div className="toast-body text-wrap">{body}</div>
         <button
           type="button"
-          className="btn-close"
+          className="btn-close m-2"
           data-bs-dismiss="toast"
           aria-label="Закрыть"
         ></button>
       </div>
-      <div className="toast-body">{body}</div>
     </div>
   )
 }

@@ -4,11 +4,6 @@ import { useSelector } from 'react-redux'
 import { useRoutes } from './routes'
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
-import ToastContainer from './components/ToastContainer'
-import Toast from './components/Toast'
-// import FetchedPosts from './components/FetchedPosts'
-// import PostForm from './components/PostForm'
-// import Posts from './components/Posts'
 
 function App() {
   const isAuthenticated = useSelector((state) => state.auth.isAuthenticated)
@@ -27,9 +22,6 @@ function App() {
     <Router>
       <Navbar />
       {routes}
-      <ToastContainer>
-        <Toast />
-      </ToastContainer>
       <Footer />
     </Router>
   )

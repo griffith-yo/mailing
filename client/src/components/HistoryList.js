@@ -4,37 +4,37 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import Jumbotron from './Jumbotron'
 import Modal from './Modal'
-import { deleteGroup } from '../redux/actions'
 import Dropdown from './Dropdown'
+import { deleteHistory } from '../redux/actions'
 
-const GroupsList = ({ data }) => {
+const HistoryList = ({ data }) => {
   const dispatch = useDispatch()
 
   const deleteHandler = useCallback(
     (id) => {
-      dispatch(deleteGroup(id))
+      dispatch(deleteHistory(id))
     },
     [dispatch]
   )
 
-  return data.map((group) => (
-    <Jumbotron key={group._id}>
+  return data.map((mail) => (
+    <Jumbotron key={mail._id}>
       <div className="row">
         <div className="col-sm-4 text-start ps-4">
           <span className="text-muted">
-            {new Date(group.date).toLocaleDateString() +
+            {new Date(mail.date).toLocaleDateString() +
               ' ' +
-              new Date(group.date).toLocaleTimeString()}
+              new Date(mail.date).toLocaleTimeString()}
           </span>
           <br />
-          {<ins>{group.name}</ins>}
+          {<ins>{mail.theme}</ins>}
           <br />
-          <em>{group.tags.map((tag) => `#${tag} `)}</em>
+          {/* <em>{group.tags.map((tag) => `#${tag} `)}</em> */}
         </div>
         <div className="col-sm-6 text-center"></div>
         <div className="col-sm-1 text-center my-auto pe-4">
           {' '}
-          <strong>{group.emails.length}</strong>
+          {/* <strong>{group.emails.length}</strong> */}
           <br /> E-MAIL
         </div>
         <div className="col-sm-1 text-center">
@@ -47,7 +47,7 @@ const GroupsList = ({ data }) => {
               type="button"
               className="btn text-danger dropdown-item"
               data-bs-toggle="modal"
-              data-bs-target={`#modal-${group._id}`}
+              data-bs-target={`#modal-${mail._id}`}
             >
               Удалить
             </button>
@@ -57,17 +57,17 @@ const GroupsList = ({ data }) => {
       <Modal
         title="Удаление"
         size="modal-md"
-        id={`modal-${group._id}`}
-        onClick={() => deleteHandler(group._id)}
+        id={`modal-${mail._id}`}
+        onClick={() => deleteHandler(mail._id)}
       >
-        Вы хотите удалить группу рассылки {group.name}?
+        Вы хотите удалить рассылку {mail.theme}?
       </Modal>
     </Jumbotron>
   ))
 }
 
-GroupsList.propTypes = {
+HistoryList.propTypes = {
   data: PropTypes.array.isRequired,
 }
 
-export default GroupsList
+export default HistoryList

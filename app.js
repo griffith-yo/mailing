@@ -15,8 +15,9 @@ app.use(
   '/api/upload/attachments',
   require('./routes/upload.attachments.routes')
 )
-app.use('/api/send', require('./routes/send.routes'))
+app.use('/api/send', ({ router } = require('./routes/send.routes')))
 app.use('/api/group', require('./routes/group.routes'))
+app.use('/api/mail', require('./routes/mail.routes'))
 app.use('/api/sender', require('./routes/sender.routes'))
 app.use('/api/delete', require('./routes/delete.routes'))
 // app.use(

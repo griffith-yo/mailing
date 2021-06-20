@@ -7,12 +7,14 @@ import {
   FETCH_SENDERS,
   FETCH_GROUPS_SELECT,
   FETCH_SENDERS_SELECT,
+  FETCH_HISTORY,
 } from './types'
 
 const initialState = {
   senders: [],
   groups: [],
   fetchedGroups: [{ _id: '', tags: [], name: '', emails: [] }],
+  fetchedHistory: [],
   fetchedGroupsSelect: [],
   fetchedSenders: [],
   fetchedSendersSelect: [],
@@ -28,6 +30,8 @@ export const mailingReducer = (state = initialState, action) => {
     //   return { ...state, senders: state.senders.concat(action.payload) }
     case FETCH_GROUPS:
       return { ...state, fetchedGroups: action.payload }
+    case FETCH_HISTORY:
+      return { ...state, fetchedHistory: action.payload }
     case FETCH_SENDERS:
       return { ...state, fetchedSenders: action.payload }
     case FETCH_GROUPS_SELECT:

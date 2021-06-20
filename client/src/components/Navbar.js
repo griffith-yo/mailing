@@ -20,9 +20,9 @@ const Navbar = () => {
   }
 
   return (
-    <header className="mb-auto">
+    <header>
       {isAuthenticated && (
-        <div>
+        <>
           <h3 className="float-md-start mb-0">Mailing</h3>
           <nav
             className={`nav nav-masthead ${color} justify-content-center float-md-end`}
@@ -36,9 +36,6 @@ const Navbar = () => {
             <Link className="nav-link border-0 outline-none" to="/senders">
               Отправители
             </Link>
-            <Link className="nav-link border-0 outline-none" to="/reports">
-              Отчеты
-            </Link>
             <Link className="nav-link border-0 outline-none" to="/history">
               История
             </Link>
@@ -50,7 +47,7 @@ const Navbar = () => {
               Выход
             </button>
           </nav>
-        </div>
+        </>
       )}
     </header>
   )

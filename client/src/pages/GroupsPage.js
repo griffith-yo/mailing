@@ -38,7 +38,7 @@ const SendPage = () => {
   }, [fetch])
 
   return (
-    <main className="px-3 mt-5 mb-5" style={{ height: '80vh' }}>
+    <main className="text-center">
       <h3 className="h3 text-start">
         ГРУППЫ РАССЫЛКИ{' '}
         <button
@@ -50,34 +50,36 @@ const SendPage = () => {
         </button>
       </h3>
       <hr />
-      {loading ? <Loader /> : <GroupsList data={groups} />}
-      <Modal
-        title="Добавление группы рассылки"
-        id="groupForm"
-        onClick={onClickHandler}
-      >
-        {' '}
-        <form encType="multipart/form-data" noValidate>
-          <div className="row align-items-end">
-            <div className="col-sm-7">
-              <InputFile
-                name="group"
-                onChange={fileHandler}
-                label="Текстовый файл со списком e-mail адресов"
-                accept=".txt"
-              />
+      <div className="scroll">
+        {loading ? <Loader /> : <GroupsList data={groups} />}
+        <Modal
+          title="Добавление группы рассылки"
+          id="groupForm"
+          onClick={onClickHandler}
+        >
+          {' '}
+          <form encType="multipart/form-data" noValidate>
+            <div className="row align-items-end">
+              <div className="col-sm-7">
+                <InputFile
+                  name="group"
+                  onChange={fileHandler}
+                  label="Текстовый файл со списком e-mail адресов"
+                  accept=".txt"
+                />
+              </div>
+              <div className="col-sm-5">
+                <InputBootstrap
+                  name="tag"
+                  placeholder="Теги"
+                  onChange={formHandler}
+                  value={form.tag}
+                />
+              </div>
             </div>
-            <div className="col-sm-5">
-              <InputBootstrap
-                name="tag"
-                placeholder="Теги"
-                onChange={formHandler}
-                value={form.tag}
-              />
-            </div>
-          </div>
-        </form>
-      </Modal>
+          </form>
+        </Modal>
+      </div>
     </main>
   )
 }

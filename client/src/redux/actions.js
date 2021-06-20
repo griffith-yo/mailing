@@ -15,6 +15,7 @@ import {
   FETCH_SENDERS,
   FETCH_GROUPS_SELECT,
   FETCH_SENDERS_SELECT,
+  FETCH_HISTORY,
 } from './types'
 import { request } from './components/request'
 import { setAuth, setApp, clearAuth } from './components/localStorage'
@@ -228,6 +229,20 @@ export function fetchGroups(headers) {
   }
 }
 
+export function fetchHistory(headers) {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoader())
+      const response = await request('/api/mail', 'GET', null, headers)
+      dispatch({ type: FETCH_HISTORY, payload: [...response] })
+      dispatch(hideLoader())
+    } catch (e) {
+      dispatch(showAlert(e.message || 'Что-то пошло не так'))
+      dispatch(hideLoader())
+    }
+  }
+}
+
 export function fetchSenders(headers) {
   return async (dispatch) => {
     try {
@@ -307,6 +322,27 @@ export function deleteGroup(id, headers) {
       )
       const getResponse = await request('/api/group', 'GET', null, headers)
       dispatch({ type: FETCH_GROUPS, payload: [...getResponse] })
+      dispatch(hideLoader())
+      dispatch(showInfo(deleteResponse.message || 'Выполнено'))
+    } catch (e) {
+      dispatch(showAlert(e.message || 'Что-то пошло не так'))
+      dispatch(hideLoader())
+    }
+  }
+}
+
+export function deleteHistory(id, headers) {
+  return async (dispatch) => {
+    try {
+      dispatch(showLoader())
+      const deleteResponse = await request(
+        `/api/delete/mail/${id}`,
+        'DELETE',
+        null,
+        headers
+      )
+      const getResponse = await request('/api/mail', 'GET', null, headers)
+      dispatch({ type: FETCH_HISTORY, payload: [...getResponse] })
       dispatch(hideLoader())
       dispatch(showInfo(deleteResponse.message || 'Выполнено'))
     } catch (e) {

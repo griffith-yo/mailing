@@ -5,8 +5,9 @@ const schema = new Schema({
   sender: { type: Types.ObjectId, require: true },
   theme: { type: String, require: true },
   body: { type: String, require: true },
-  results: [{ type: Object, require: true }],
+  results: { type: Array, require: true },
   attachments: { type: Array },
+  date: { type: Date, default: Date.now() },
 })
 
 module.exports = model('Mail', schema)

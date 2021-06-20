@@ -2,6 +2,7 @@ const { Router } = require('express')
 const Group = require('../models/Group')
 const Sender = require('../models/Sender')
 const auth = require('../middleware/auth.middleware')
+const Mail = require('../models/Mail')
 const router = Router()
 
 router.delete('/sender/:_id', auth, async (req, res) => {
@@ -17,6 +18,15 @@ router.delete('/group/:_id', auth, async (req, res) => {
   try {
     await Group.deleteOne({ _id: req.params._id })
     res.status(200).json({ message: 'Группа рассылки удалена' })
+  } catch (e) {
+    res.status(500).json({ message: `Ошибка при запросе к базу данных: ${e}` })
+  }
+})
+
+router.delete('/mail/:_id', auth, async (req, res) => {
+  try {
+    await Mail.deleteOne({ _id: req.params._id })
+    res.status(200).json({ message: 'Рассылка удалена' })
   } catch (e) {
     res.status(500).json({ message: `Ошибка при запросе к базу данных: ${e}` })
   }

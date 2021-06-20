@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import Dropdown from './Dropdown'
 import Modal from './Modal'
 import Jumbotron from './Jumbotron'
@@ -9,17 +9,12 @@ import { deleteSender } from '../redux/actions'
 
 const SendersList = ({ data }) => {
   const dispatch = useDispatch()
-  const token = useSelector((state) => state.auth.token)
 
   const deleteHandler = useCallback(
     (id) => {
-      dispatch(
-        deleteSender(id, {
-          Authorization: `Bearer ${token}`,
-        })
-      )
+      dispatch(deleteSender(id))
     },
-    [dispatch, token]
+    [dispatch]
   )
 
   return data.map((sender) => (

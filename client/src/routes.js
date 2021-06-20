@@ -3,7 +3,6 @@ import { Switch, Route, Redirect } from 'react-router-dom'
 import AuthPage from './pages/AuthPage'
 import SendPage from './pages/SendPage'
 import GroupsPage from './pages/GroupsPage'
-import ReportsPage from './pages/ReportsPage'
 import HistoryPage from './pages/HistoryPage'
 import SendersPage from './pages/SendersPage'
 
@@ -16,9 +15,6 @@ export const useRoutes = (isAuthenticated) => {
         </Route>
         <Route path="/groups" exact>
           <GroupsPage />
-        </Route>
-        <Route path="/reports" exact>
-          <ReportsPage />
         </Route>
         <Route path="/history" exact>
           <HistoryPage />
