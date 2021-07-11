@@ -8,14 +8,15 @@ import { fetchHistory } from '../redux/actions'
 
 export const HistoryPage = () => {
   const dispatch = useDispatch()
+  const token: string = useSelector((state: IRootState) => state.auth.token)
   const loading: boolean = useSelector((state: IRootState) => state.app.loading)
   const history: IMail[] = useSelector(
     (state: IRootState) => state.mailing.fetchedHistory
   )
 
   const fetch = useCallback(() => {
-    dispatch(fetchHistory())
-  }, [dispatch])
+    dispatch(fetchHistory(token))
+  }, [dispatch, token])
 
   useEffect(() => {
     fetch()

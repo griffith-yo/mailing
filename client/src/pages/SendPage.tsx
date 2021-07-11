@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo, FC, FormEvent } from 'react'
+import { useCallback, useEffect, useState, useMemo, FC } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import SunEditor from 'suneditor-react'
@@ -15,6 +15,7 @@ import {
   fetchMailCopy,
 } from '../redux/actions'
 import { IRootState } from '../interfaces/reducer.interface'
+import { IGroupsSelect, ISendersSelect } from '../interfaces/state.interface'
 
 interface ParamTypes {
   _id: string
@@ -23,13 +24,14 @@ interface ParamTypes {
 export const SendPage: FC = () => {
   const { _id } = useParams<ParamTypes>()
   const dispatch = useDispatch()
-  const groups = useSelector(
+  const token: string = useSelector((state: IRootState) => state.auth.token)
+  const groups: IGroupsSelect[] = useSelector(
     (state: IRootState) => state.mailing.fetchedGroupsSelect
   )
-  const senders = useSelector(
+  const senders: ISendersSelect[] = useSelector(
     (state: IRootState) => state.mailing.fetchedSendersSelect
   )
-  const attachments = useSelector(
+  const attachments: string = useSelector(
     (state: IRootState) => state.mailing.attachments
   )
   const [form, setForm] = useState({
@@ -41,25 +43,25 @@ export const SendPage: FC = () => {
   const fileData = useMemo(() => new FormData(), [])
 
   const fetch = useCallback(() => {
-    dispatch(fetchGroupsSelect())
-    dispatch(fetchSendersSelect())
-  }, [dispatch])
+    dispatch(fetchGroupsSelect(token))
+    dispatch(fetchSendersSelect(token))
+  }, [dispatch, token])
 
   useEffect(() => {
     fetch()
-    if (_id) fetchMailCopy(_id)
-  }, [fetch, _id])
+    if (_id) fetchMailCopy(token, _id)
+  }, [fetch, _id, token])
 
   const onClickHandler = useCallback(() => {
-    dispatch(sendMail({ ...form, attachments }))
-  }, [dispatch, attachments, form])
+    dispatch(sendMail(token, { ...form, attachments }))
+  }, [dispatch, attachments, form, token])
 
   const fileHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     for (let i = 0; i < event.target.files!.length; i++) {
       fileData.append(event.target.name!, event.target.files![i])
     }
 
-    dispatch(uploadAttachments(fileData))
+    dispatch(uploadAttachments(token, fileData))
   }
   return (
     <main className="text-start">

@@ -1,11 +1,12 @@
 import { FC, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Dropdown } from './Dropdown'
 import { Modal } from './Modal'
 import { Jumbotron } from './Jumbotron'
 import { deleteSender } from '../redux/actions'
 import { ISender } from '../interfaces/state.interface'
+import { IRootState } from '../interfaces/reducer.interface'
 
 interface ISendersListProps {
   data: ISender[]
@@ -13,12 +14,13 @@ interface ISendersListProps {
 
 export const SendersList: FC<ISendersListProps> = (props) => {
   const dispatch = useDispatch()
+  const token: string = useSelector((state: IRootState) => state.auth.token)
 
   const deleteHandler = useCallback(
     (id) => {
-      dispatch(deleteSender(id))
+      dispatch(deleteSender(token, id))
     },
-    [dispatch]
+    [dispatch, token]
   )
 
   return (

@@ -1,11 +1,12 @@
 import { FC, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Jumbotron } from './Jumbotron'
 import { Modal } from './Modal'
 import { deleteGroup } from '../redux/actions'
 import { Dropdown } from './Dropdown'
 import { IGroup } from '../interfaces/state.interface'
+import { IRootState } from '../interfaces/reducer.interface'
 
 interface IGroupsListProps {
   data: IGroup[]
@@ -13,12 +14,13 @@ interface IGroupsListProps {
 
 export const GroupsList: FC<IGroupsListProps> = (props) => {
   const dispatch = useDispatch()
+  const token: string = useSelector((state: IRootState) => state.auth.token)
 
   const deleteHandler = useCallback(
     (id) => {
-      dispatch(deleteGroup(id))
+      dispatch(deleteGroup(token, id))
     },
-    [dispatch]
+    [dispatch, token]
   )
 
   return (

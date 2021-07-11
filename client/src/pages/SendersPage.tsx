@@ -11,6 +11,7 @@ import { ISender } from '../interfaces/state.interface'
 
 export const SendersPage = () => {
   const dispatch = useDispatch()
+  const token: string = useSelector((state: IRootState) => state.auth.token)
   const loading: boolean = useSelector((state: IRootState) => state.app.loading)
   const senders: ISender[] = useSelector(
     (state: IRootState) => state.mailing.fetchedSenders
@@ -25,14 +26,14 @@ export const SendersPage = () => {
   })
 
   const fetch = useCallback(() => {
-    dispatch(fetchSenders())
-  }, [dispatch])
+    dispatch(fetchSenders(token))
+  }, [dispatch, token])
 
   const onClickHandler = useCallback(
     (event) => {
-      dispatch(createSender(form))
+      dispatch(createSender(token, form))
     },
-    [dispatch, form]
+    [dispatch, form, token]
   )
 
   const formHandler = (

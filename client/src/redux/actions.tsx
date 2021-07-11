@@ -20,7 +20,8 @@ import {
 } from './types'
 import { request } from './components/request'
 import { setAuth, setApp, clearAuth } from './components/localStorage'
-import { IActionType, IAppPayload } from '../interfaces/reducer.interface'
+import { IActionType } from '../interfaces/reducer.interface'
+import { IHeaders } from '../interfaces/request.interface'
 
 // ============== APP ACTIONS ==============
 
@@ -88,11 +89,11 @@ export function changeTheme(newTheme: string) {
 
 // ============== AUTH ACTIONS ==============
 
-export function register<T>(data: any, headers?: T) {
+export function register(data: any, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      await request('/api/auth/register', 'POST', { ...data }, headers)
+      await request('/api/auth/register', 'POST', '', { ...data }, headers)
       dispatch({ type: REGISTATION })
       dispatch(hideLoader())
     } catch (e) {
@@ -102,14 +103,16 @@ export function register<T>(data: any, headers?: T) {
   }
 }
 
-export function authentication(data: any) {
+export function authentication(token: string, data: any) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      const response = await request('/api/auth/login', 'POST', { ...data })
+      const response = await request('/api/auth/login', 'POST', token, {
+        ...data,
+      })
       dispatch({ type: AUTHENTICATION, payload: { ...response } })
       setAuth({
-        id: response.userId,
+        id: response.id,
         token: response.token,
         isAuthenticated: true,
       })
@@ -134,17 +137,24 @@ export function logout() {
 
 // CREATING MODELS
 
-export function createSender<T>(data: any, headers?: T) {
+export function createSender(token: string, data: any, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
       const postResponse = await request(
         '/api/create/sender',
         'POST',
+        token,
         { ...data },
         headers
       )
-      const getResponse = await request('/api/sender', 'GET', null, headers)
+      const getResponse = await request(
+        '/api/sender',
+        'GET',
+        token,
+        null,
+        headers
+      )
       dispatch({ type: FETCH_SENDERS, payload: [...getResponse] })
       dispatch(hideLoader())
       dispatch(showInfo(postResponse.message || 'Выполнено'))
@@ -155,18 +165,29 @@ export function createSender<T>(data: any, headers?: T) {
   }
 }
 
-export function uploadGroup<T>(formData: FormData, headers?: T) {
+export function uploadGroup(
+  token: string,
+  formData: FormData,
+  headers?: IHeaders
+) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
       const postResponse = await request(
         '/api/upload/group',
         'POST',
+        token,
         formData,
         headers,
         true
       )
-      const getResponse = await request('/api/group', 'GET', null, headers)
+      const getResponse = await request(
+        '/api/group',
+        'GET',
+        token,
+        null,
+        headers
+      )
       dispatch({ type: FETCH_GROUPS, payload: [...getResponse] })
       dispatch(hideLoader())
       dispatch(showInfo(postResponse.message || 'Выполнено'))
@@ -179,11 +200,17 @@ export function uploadGroup<T>(formData: FormData, headers?: T) {
 
 // SENDING MAIL
 
-export function sendMail<R>(data: any, headers?: R) {
+export function sendMail(token: string, data: any, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      const response = await request('/api/send/', 'POST', { ...data }, headers)
+      const response = await request(
+        '/api/send/',
+        'POST',
+        token,
+        { ...data },
+        headers
+      )
       dispatch({ type: SEND_MAIL })
       dispatch(hideLoader())
       dispatch(showInfo(response.message || 'Выполнено'))
@@ -194,13 +221,18 @@ export function sendMail<R>(data: any, headers?: R) {
   }
 }
 
-export function uploadAttachments<T>(formData: FormData, headers?: T) {
+export function uploadAttachments(
+  token: string,
+  formData: FormData,
+  headers?: IHeaders
+) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
       const response = await request(
         '/api/upload/attachments',
         'POST',
+        token,
         formData,
         headers,
         true
@@ -217,11 +249,11 @@ export function uploadAttachments<T>(formData: FormData, headers?: T) {
 
 // FETCHING MODELS
 
-export function fetchGroups<T>(headers?: T) {
+export function fetchGroups(token: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      const response = await request('/api/group', 'GET', null, headers)
+      const response = await request('/api/group', 'GET', token, null, headers)
       dispatch({ type: FETCH_GROUPS, payload: [...response] })
       dispatch(hideLoader())
     } catch (e) {
@@ -231,11 +263,11 @@ export function fetchGroups<T>(headers?: T) {
   }
 }
 
-export function fetchHistory<T>(headers?: T) {
+export function fetchHistory(token: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      const response = await request('/api/mail', 'GET', null, headers)
+      const response = await request('/api/mail', 'GET', token, null, headers)
       dispatch({ type: FETCH_HISTORY, payload: [...response] })
       dispatch(hideLoader())
     } catch (e) {
@@ -245,11 +277,11 @@ export function fetchHistory<T>(headers?: T) {
   }
 }
 
-export function fetchSenders<T>(headers?: T) {
+export function fetchSenders(token: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      const response = await request('/api/sender', 'GET', null, headers)
+      const response = await request('/api/sender', 'GET', token, null, headers)
       dispatch({ type: FETCH_SENDERS, payload: [...response] })
       dispatch(hideLoader())
     } catch (e) {
@@ -259,11 +291,17 @@ export function fetchSenders<T>(headers?: T) {
   }
 }
 
-export function fetchMailCopy<T>(id: string, headers?: T) {
+export function fetchMailCopy(token: string, id: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      const response = await request(`/api/mail/${id}`, 'GET', null, headers)
+      const response = await request(
+        `/api/mail/${id}`,
+        'GET',
+        token,
+        null,
+        headers
+      )
       dispatch({ type: FETCH_MAIL_COPY, payload: response })
       dispatch(hideLoader())
     } catch (e) {
@@ -275,11 +313,17 @@ export function fetchMailCopy<T>(id: string, headers?: T) {
 
 // FETCHING MODELS FOR REACT SELECT
 
-export function fetchGroupsSelect<T>(headers?: T) {
+export function fetchGroupsSelect(token: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      const response = await request('/api/group/select', 'GET', null, headers)
+      const response = await request(
+        '/api/group/select',
+        'GET',
+        token,
+        null,
+        headers
+      )
       dispatch({ type: FETCH_GROUPS_SELECT, payload: [...response] })
       dispatch(hideLoader())
     } catch (e) {
@@ -289,11 +333,17 @@ export function fetchGroupsSelect<T>(headers?: T) {
   }
 }
 
-export function fetchSendersSelect<T>(headers?: T) {
+export function fetchSendersSelect(token: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
-      const response = await request('/api/sender/select', 'GET', null, headers)
+      const response = await request(
+        '/api/sender/select',
+        'GET',
+        token,
+        null,
+        headers
+      )
       dispatch({ type: FETCH_SENDERS_SELECT, payload: [...response] })
       dispatch(hideLoader())
     } catch (e) {
@@ -305,17 +355,24 @@ export function fetchSendersSelect<T>(headers?: T) {
 
 // DELETE FROM DATABASE
 
-export function deleteSender<T>(id: string, headers?: T) {
+export function deleteSender(token: string, id: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
       const deleteResponse = await request(
         `/api/delete/sender/${id}`,
         'DELETE',
+        token,
         null,
         headers
       )
-      const getResponse = await request('/api/sender', 'GET', null, headers)
+      const getResponse = await request(
+        '/api/sender',
+        'GET',
+        token,
+        null,
+        headers
+      )
       dispatch({ type: FETCH_SENDERS, payload: [...getResponse] })
       dispatch(hideLoader())
       dispatch(showInfo(deleteResponse.message || 'Выполнено'))
@@ -326,17 +383,24 @@ export function deleteSender<T>(id: string, headers?: T) {
   }
 }
 
-export function deleteGroup<T>(id: string, headers?: T) {
+export function deleteGroup(token: string, id: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
       const deleteResponse = await request(
         `/api/delete/group/${id}`,
         'DELETE',
+        token,
         null,
         headers
       )
-      const getResponse = await request('/api/group', 'GET', null, headers)
+      const getResponse = await request(
+        '/api/group',
+        'GET',
+        token,
+        null,
+        headers
+      )
       dispatch({ type: FETCH_GROUPS, payload: [...getResponse] })
       dispatch(hideLoader())
       dispatch(showInfo(deleteResponse.message || 'Выполнено'))
@@ -347,17 +411,24 @@ export function deleteGroup<T>(id: string, headers?: T) {
   }
 }
 
-export function deleteHistory<T>(id: string, headers?: T) {
+export function deleteHistory(token: string, id: string, headers?: IHeaders) {
   return async (dispatch: Function) => {
     try {
       dispatch(showLoader())
       const deleteResponse = await request(
         `/api/delete/mail/${id}`,
         'DELETE',
+        token,
         null,
         headers
       )
-      const getResponse = await request('/api/mail', 'GET', null, headers)
+      const getResponse = await request(
+        '/api/mail',
+        'GET',
+        token,
+        null,
+        headers
+      )
       dispatch({ type: FETCH_HISTORY, payload: [...getResponse] })
       dispatch(hideLoader())
       dispatch(showInfo(deleteResponse.message || 'Выполнено'))

@@ -11,6 +11,7 @@ import { IGroup } from '../interfaces/state.interface'
 
 export const GroupsPage: FC = () => {
   const dispatch = useDispatch()
+  const token: string = useSelector((state: IRootState) => state.auth.token)
   const loading: boolean = useSelector((state: IRootState) => state.app.loading)
   const groups: IGroup[] = useSelector(
     (state: IRootState) => state.mailing.fetchedGroups
@@ -19,8 +20,8 @@ export const GroupsPage: FC = () => {
   const fileData: FormData = useMemo(() => new FormData(), [])
 
   const fetch = useCallback(() => {
-    dispatch(fetchGroups())
-  }, [dispatch])
+    dispatch(fetchGroups(token))
+  }, [dispatch, token])
 
   const fileHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     fileData.append('group', event.target.files![0])
@@ -28,10 +29,10 @@ export const GroupsPage: FC = () => {
 
   const onClickHandler = useCallback(() => {
     fileData.append('tag', form.tag)
-    dispatch(uploadGroup(fileData))
+    dispatch(uploadGroup(token, fileData))
     fileData.delete('tag')
     setForm((prev) => ({ tag: '' }))
-  }, [fileData, form.tag, dispatch])
+  }, [fileData, form.tag, dispatch, token])
 
   const formHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [event.target.name]: event.target.value }))

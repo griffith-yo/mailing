@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react'
+import { useRef } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { Toast as ToastBootstrap } from 'bootstrap'
 import { hideAlert, hideInfo } from '../redux/actions'
@@ -15,33 +15,31 @@ export const Toast = () => {
   let color: string = ''
   let body: string = 'Текст всплывающего уведомления'
 
-  useEffect(() => {
-    if (toastRef.current !== null) {
-      const toast = new ToastBootstrap(toastRef.current.toString())
+  if (toastRef.current !== null) {
+    const toast = new ToastBootstrap(toastRef.current)
 
-      if (alert) {
-        color = 'bg-danger'
-        body = alert
-        toast.show()
-        if (toastRef.current !== null) {
-          toastRef.current.addEventListener('hidden.bs.toast', () =>
-            dispatch(hideAlert())
-          )
-        }
-      }
-
-      if (info) {
-        color = 'bg-success'
-        body = info
-        toast.show()
-        if (toastRef.current !== null) {
-          toastRef.current.addEventListener('hidden.bs.toast', () =>
-            dispatch(hideInfo())
-          )
-        }
+    if (alert) {
+      color = 'bg-danger'
+      body = alert
+      toast.show()
+      if (toastRef.current !== null) {
+        toastRef.current.addEventListener('hidden.bs.toast', () =>
+          dispatch(hideAlert())
+        )
       }
     }
-  }, [alert, info])
+
+    if (info) {
+      color = 'bg-success'
+      body = info
+      toast.show()
+      if (toastRef.current !== null) {
+        toastRef.current.addEventListener('hidden.bs.toast', () =>
+          dispatch(hideInfo())
+        )
+      }
+    }
+  }
 
   return (
     <div

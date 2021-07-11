@@ -1,11 +1,13 @@
 import { ChangeEvent, MouseEvent, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { authentication, register } from '../redux/actions'
 import { SubmitButton } from '../components/SubmitButton'
 import { InputFloating } from '../components/InputFloating'
+import { IRootState } from '../interfaces/reducer.interface'
 
 export const AuthPage = () => {
   const dispatch = useDispatch()
+  const token: string = useSelector((state: IRootState) => state.auth.token)
   const [data, setData] = useState({ login: '', password: '' })
 
   const changeInputHandler = (event: ChangeEvent<HTMLInputElement>) => {
@@ -14,8 +16,8 @@ export const AuthPage = () => {
 
   const onClickHandler = (event: MouseEvent, action: string) => {
     event.preventDefault()
-    if (action === 'Регистрация') dispatch(register(data))
-    if (action === 'Войти') dispatch(authentication(data))
+    if (action === 'Registration') dispatch(register(data))
+    if (action === 'Signin') dispatch(authentication(token, data))
   }
 
   return (
@@ -40,13 +42,13 @@ export const AuthPage = () => {
         />
         <div className="btn-group-vertical d-block">
           <SubmitButton
-            onClick={(event) => onClickHandler(event, 'Войти')}
+            onClick={(event) => onClickHandler(event, 'Signin')}
             size={'btn-lg'}
             width={'d-block'}
             text="Войти"
           />
           <SubmitButton
-            onClick={(event) => onClickHandler(event, 'Регистрация')}
+            onClick={(event) => onClickHandler(event, 'Registration')}
             size={'btn-lg'}
             width={'d-block'}
             text="Регистрация"

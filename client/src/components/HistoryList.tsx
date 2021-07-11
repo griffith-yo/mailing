@@ -1,11 +1,12 @@
 import { FC, useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { Jumbotron } from './Jumbotron'
 import { Modal } from './Modal'
 import { Dropdown } from './Dropdown'
 import { deleteHistory } from '../redux/actions'
 import { IMail } from '../interfaces/state.interface'
+import { IRootState } from '../interfaces/reducer.interface'
 
 interface IHistoryListProps {
   data: IMail[]
@@ -13,12 +14,13 @@ interface IHistoryListProps {
 
 export const HistoryList: FC<IHistoryListProps> = (props) => {
   const dispatch = useDispatch()
+  const token: string = useSelector((state: IRootState) => state.auth.token)
 
   const deleteHandler = useCallback(
     (id) => {
-      dispatch(deleteHistory(id))
+      dispatch(deleteHistory(token, id))
     },
-    [dispatch]
+    [dispatch, token]
   )
 
   return (

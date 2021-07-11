@@ -1,24 +1,24 @@
-import { LOCAL_STORAGE_AUTH } from './localStorage'
+import { IHeaders } from '../../interfaces/request.interface'
+import { clearAuth } from './localStorage'
 
 export async function request(
   url: string,
   method: string = 'GET',
-  body: BodyInit | null | undefined,
-  headers?: any,
+  token?: string,
+  body?: BodyInit | null,
+  header?: IHeaders,
   file?: boolean
 ) {
   try {
-    const auth = { Authorization: `Bearer ${LOCAL_STORAGE_AUTH?.token}` }
+    const auth = { Authorization: `Bearer ${token}` }
 
-    // Если передаем body (POST) и работаем не с файлом, то переводим JSON в строковый формат и добавляем Content-Type
+    const headers: IHeaders = { ...auth, ...header }
+
     if (body && !file) {
       headers['Content-Type'] = 'application/json'
       body = JSON.stringify(body)
     }
 
-    headers = { ...auth, ...headers }
-
-    // Отправляем запрос на сервер и ждем
     const response = await fetch(url, {
       method,
       body,
@@ -32,6 +32,10 @@ export async function request(
 
     return data
   } catch (e) {
+    if (e.message === 'Нет авторизации') {
+      clearAuth()
+      window.location.reload()
+    }
     throw e
   }
 }
