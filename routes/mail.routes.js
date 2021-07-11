@@ -6,9 +6,17 @@ const router = Router()
 
 router.get('/', auth, async (req, res) => {
   try {
-    const groups = await Group.find({}).sort({ _id: -1 })
     const mails = await Mail.find({}).sort({ _id: -1 })
     res.json(mails)
+  } catch (e) {
+    res.status(500).json({ message: `Ошибка при запросе к базу данных: ${e}` })
+  }
+})
+
+router.get('/:_id', auth, async (req, res) => {
+  try {
+    const mail = await Mail.findById(req.params._id)
+    res.json(mail)
   } catch (e) {
     res.status(500).json({ message: `Ошибка при запросе к базу данных: ${e}` })
   }

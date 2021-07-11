@@ -70,7 +70,7 @@ router.post('/', auth, async (req, res) => {
       body,
       attachments,
     })
-
+    await mail.save()
     mailTrackOptions.getData = (data) => ({ ...data, mailResultId: mail._id })
 
     res.status(200).json({ message: `Рассылка отправлена` })
@@ -102,13 +102,10 @@ router.post('/', auth, async (req, res) => {
 
         if (result.result.accepted[0] === email) results.push(resultInfo)
         else results.push({ ...resultInfo, accepted: false })
+        await Mail.findByIdAndUpdate(mail._id, { results })
         return
       })
     )
-
-    mail.results = results
-
-    await mail.save()
   } catch (e) {
     res.status(500).json({ message: `Ошибка при запросе к базу данных: ${e}` })
   }

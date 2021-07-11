@@ -92,7 +92,7 @@ router.post(
       // Отвечаем по умолчанию со статусом 200
       res.json({
         token,
-        userId: user._id,
+        id: user._id,
       })
     } catch (e) {
       res
